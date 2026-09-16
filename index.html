@@ -88,7 +88,7 @@
         <picture>
           <source srcset="img/overview-dark.png" media="(prefers-color-scheme: dark)">
           <img src="img/overview-light.png" width="1440" height="1165" decoding="async"
-               alt="The linkgap overview screen: a headline figure of 217 good referring domains behind the median competitor, a struck-through 546 before removing one link network of 364 domains, four tiles for your good domains, median competitor, link networks and cost to close showing an estimate of about €27,602 for all 217 links at a median offer price of €127.20, and a bar chart comparing seven competitors with a dashed median line.">
+               alt="The linkgap overview screen: a headline figure of 217 good referring domains behind the median competitor, a struck-through 546 before removing one link network of 364 domains, four tiles for your good domains, median competitor, link networks and cost to close showing an estimate of about €12,652 for the 87 bought links that match the link value of their 217, and a bar chart comparing seven competitors with a dashed median line.">
         </picture>
       </figure>
     </div>
@@ -213,26 +213,29 @@
             <div>
               <h3>Plan</h3>
               <p>
-                Give it a budget and it buys cheapest first from the offers you imported, skipping
-                domains that already link to you, with any portal surcharge as its own column so
-                the total is what you actually pay. At €1,500, real prices from a German link
-                marketplace bought 12 links for €1,338.62, and the planner said plainly that 205 links
-                were still missing and only 18 offers matched at all — then priced the rest anyway:
-                at the median of those prices, closing the whole gap runs to about €27,600.
+                Give it a budget and it buys from the offers you imported — cheapest first, or by
+                value per euro — skipping domains that already link to you, with any portal surcharge
+                as its own column so the total is what you actually pay. At €1,500, real prices from a
+                German link marketplace bought 12 links for €1,338.62. By count that is 205 short of
+                217. By <em>value</em> it is 62% of the way, because the domains behind that gap are
+                mostly weak (median authority 1 of 100) and a bought link is worth about 2.5 of them.
+                Matching their link value takes about 87 links, roughly €12,650 — and the first ten
+                carry 61% of the modelled impact for about €1,005.
               </p>
             </div>
           </div>
           <figure class="shot">
             <picture>
               <source srcset="img/plan-dark.png" media="(prefers-color-scheme: dark)">
-              <img src="img/plan-light.png" width="1440" height="1124" loading="lazy" decoding="async"
-                   alt="The budget plan screen with a budget meter at €1,338.62 of €1,500 with €161.38 left, a links meter at 12 of 217 with 205 still missing, an estimate of about €27,602 to buy all 217 at the median price of €127.20, and a table of offers with base price, surcharge and total.">
+              <img src="img/plan-light.png" width="1440" height="1823" loading="lazy" decoding="async"
+                   alt="The budget plan screen with three meters — budget €1,338.62 of €1,500, links 12 of 217, impact 62.5% of the way to the competitor's link value — a curve of diminishing returns, a table showing 1 link at €68.50 for 24.2% impact up to 87 links at €12,651.90 for 100%, and the offers bought with base price, surcharge and total.">
             </picture>
           </figure>
           <p class="shot-note">
             The prices in this screen are real prices from a German link marketplace; only the
-            site names are fictional. The estimate is labelled as one: median price × links still
-            needed, with the range from the cheaper and dearer quarters of the same offers.
+            site names are fictional. Impact is modelled, and labelled as such: every domain is
+            weighted by authority, and the curve flattens because a site at zero gains most from
+            its first links. It is the shape of the thing, not a ranking forecast.
           </p>
         </li>
 
