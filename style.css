@@ -1,11 +1,23 @@
 /* linkgap landing page — self-contained, no external requests */
 
+/* The full font stays as the fallback for any character outside the subset; browsers only fetch it
+   when such a character is on the page. The subset (made by tools/build_assets.py) is declared last,
+   so it wins for the range it covers. */
 @font-face {
   font-family: "InterVariable";
   src: url("fonts/InterVariable.woff2") format("woff2");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
+}
+@font-face {
+  font-family: "InterVariable";
+  src: url("fonts/InterVariable-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020-007E, U+00A0-00FF, U+0131, U+0152-0153, U+1E9E, U+2010-2027, U+202F, U+2030,
+    U+2039-203A, U+20AC, U+2190-2193, U+2212, U+2248;
 }
 
 /* ─────────────── tokens (same palette as the app) ─────────────── */
@@ -24,7 +36,7 @@
   --border-strong: #D4D4D8;
   --text: #18181B;
   --text-2: #52525B;
-  --text-3: #71717A;
+  --text-3: #6B6B74;   /* 4.9:1 on --surface-2, AA for small text */
   --accent: #2F5FD0;
   --accent-hover: #264FB0;
   --accent-subtle: #EAF0FC;
@@ -117,6 +129,7 @@ body {
 }
 
 h1, h2, h3 { margin: 0; letter-spacing: -0.021em; line-height: 1.15; font-weight: 640; }
+h1, h2 { text-wrap: balance; }
 p { margin: 0; }
 b { font-weight: 620; }
 s { color: var(--text-3); text-decoration-thickness: 1.5px; }
@@ -277,7 +290,7 @@ h1 {
 .cta-note {
   font-size: 14.5px;
   color: var(--text-3);
-  max-width: 34ch;
+  max-width: 46ch;
 }
 
 /* fact strip */
@@ -327,15 +340,20 @@ h1 {
 
 /* ─────────────── screenshots ─────────────── */
 
-.shot {
-  margin: 40px 0 0;
+.shot { margin: 40px 0 0; }
+.shot-frame {
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
-  background: var(--surface);
+  background: var(--bg);
   box-shadow: var(--shadow-lg);
   overflow: hidden;
 }
 .shot img { width: 100%; }
+/* long screens are cut after the first rows and fade out */
+.shot-cut img { -webkit-mask-image: linear-gradient(#000 calc(100% - 110px), transparent); mask-image: linear-gradient(#000 calc(100% - 110px), transparent); }
+.shot-cap { margin-top: 10px; font-size: 14px; color: var(--text-3); }
+.shot-cap a { color: var(--text-2); display: inline-block; padding: 4px 0; }
+.shot-swipe { display: none; }
 .shot-hero { margin-top: 56px; }
 
 .shot-note {
@@ -683,7 +701,13 @@ h2 {
   .facts { grid-template-columns: 1fr; }
   .problem-grid { grid-template-columns: 1fr; }
   .steps { gap: 56px; }
-  .shot { margin-top: 28px; border-radius: 10px; }
+  .shot { margin-top: 28px; }
+  /* phones get the screen without the app's sidebar, at a size where the text can be read;
+     the frame scrolls sideways for the rest */
+  .shot-frame { border-radius: 10px; overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; }
+  .shot-frame img { width: 820px; max-width: none; }
+  .shot-cut-m img { -webkit-mask-image: linear-gradient(#000 calc(100% - 90px), transparent); mask-image: linear-gradient(#000 calc(100% - 90px), transparent); }
+  .shot-swipe { display: inline; }
   .shot-hero { margin-top: 36px; }
   .section-head { margin-bottom: 36px; }
   h1 { max-width: none; }
@@ -841,3 +865,100 @@ a.wordmark:hover { color: var(--text); }
 .legal code { font-size: 0.92em; }
 .legal-note { font-size: 14px; color: var(--text-3, var(--text-2)); }
 .legal a { overflow-wrap: anywhere; }
+
+/* ─────────────── 2026-10 launch pass ─────────────── */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* tap targets: at least 24 px high */
+.header-signin, .footer-links a:not(.lang-switch), .header-nav a { display: inline-block; padding: 8px 0; }
+
+/* in-flow call to action after a section's proof */
+.cta-inline { margin-top: 40px; }
+.narrow .cta-inline { margin-top: 32px; }
+
+.btn-ghost { border-color: var(--border-strong); color: var(--text); background: var(--surface); }
+.btn-ghost:hover { color: var(--text); border-color: var(--text-3); }
+
+/* legal pages: details the owner still has to supply, marked as pending on purpose */
+.tbd {
+  display: inline-block;
+  margin: 3px 0;
+  padding: 2px 10px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--r-control);
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: 0.94em;
+}
+
+/* 404 */
+.notfound { padding: 120px 0; }
+.notfound h1 { max-width: none; }
+
+/* guides: hub and article pages */
+.crumbs { font-size: 14.5px; color: var(--text-3); margin-bottom: 18px; }
+.crumbs a { color: var(--text-2); display: inline-block; padding: 4px 0; }
+.article h1 { font-size: clamp(30px, 4.4vw, 44px); line-height: 1.1; max-width: none; }
+.article .lede { max-width: none; }
+.article-meta { margin-top: 16px; font-size: 14.5px; color: var(--text-3); }
+.prose { margin-top: 36px; }
+.prose h2 { font-size: clamp(23px, 2.6vw, 29px); max-width: none; margin: 52px 0 14px; }
+.prose p, .prose li { color: var(--text-2); line-height: 1.68; }
+.prose p { margin: 0 0 16px; }
+.prose ul, .prose ol { margin: 0 0 18px; padding-left: 24px; }
+.prose li { margin-bottom: 8px; }
+.prose strong { color: var(--text); font-weight: 620; }
+.prose a { overflow-wrap: anywhere; }
+.prose .shot { margin: 32px 0; }
+.prose h3 { font-size: 18px; margin: 26px 0 6px; }
+.table-wrap { overflow-x: auto; margin: 0 0 20px; border: 1px solid var(--border); border-radius: var(--r-card); background: var(--surface); }
+.prose table { border-collapse: collapse; width: 100%; font-size: 15.5px; font-variant-numeric: tabular-nums; }
+.prose th, .prose td { text-align: left; padding: 11px 16px; border-top: 1px solid var(--border); white-space: nowrap; }
+.prose thead th { border-top: 0; font-size: 13px; font-weight: 600; color: var(--text-2); background: var(--surface-2); white-space: normal; }
+.prose td:not(:first-child), .prose th:not(:first-child) { text-align: right; }
+.prose td:first-child { font: 500 0.92em/1.4 var(--font-mono); color: var(--text-2); }
+.article-cta {
+  margin: 44px 0 0;
+  padding: 26px 28px 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+.article-cta h2 { font-size: 21px; margin: 0 0 8px; max-width: none; }
+.article-cta p { color: var(--text-2); font-size: 16px; margin: 0; }
+.article-cta .cta-row { margin-top: 20px; }
+.article-foot { margin-top: 32px; font-size: 14.5px; color: var(--text-3); }
+
+.guide-list { list-style: none; margin: 40px 0 0; padding: 0; display: grid; gap: 16px; }
+.guide-card {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  padding: 24px 26px;
+  box-shadow: var(--shadow-sm);
+  color: var(--text);
+  text-decoration: none;
+}
+.guide-card:hover { border-color: var(--border-strong); color: var(--text); }
+.guide-card h2 { font-size: 20px; max-width: none; margin-bottom: 8px; color: var(--accent); }
+.guide-card p { color: var(--text-2); font-size: 16px; }
+.guide-other { margin-top: 28px; font-size: 15.5px; color: var(--text-2); }
+
+@media (max-width: 560px) {
+  .article-cta { padding: 20px; }
+  .guide-card { padding: 20px; }
+  .prose th, .prose td { padding: 10px 12px; }
+}
